@@ -1,18 +1,13 @@
 #
-# This file is part of the WarheadCore Project. See AUTHORS file for Copyright information
+# This file is part of the AzerothCore Project. See AUTHORS file for Copyright information
 #
-# This program is free software; you can redistribute it and/or modify it
-# under the terms of the GNU Affero General Public License as published by the
-# Free Software Foundation; either version 3 of the License, or (at your
-# option) any later version.
+# This file is free software; as a special exception the author gives
+# unlimited permission to copy and/or distribute it, with or without
+# modifications, as long as this notice is preserved.
 #
-# This program is distributed in the hope that it will be useful, but WITHOUT
-# ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or
-# FITNESS FOR A PARTICULAR PURPOSE. See the GNU Affero General Public License for
-# more details.
-#
-# You should have received a copy of the GNU General Public License along
-# with this program. If not, see <http://www.gnu.org/licenses/>.
+# This program is distributed in the hope that it will be useful, but
+# WITHOUT ANY WARRANTY, to the extent permitted by law; without even the
+# implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
 #
 
 # Require version Cmake
@@ -23,12 +18,8 @@ message(STATUS "CMake version: ${CMAKE_VERSION}")
 # CMake policies (can not be handled elsewhere)
 cmake_policy(SET CMP0005 NEW)
 
-if (${CMAKE_VERSION} GREATER_EQUAL 3.28)
+if (POLICY CMP0153)
   cmake_policy(SET CMP0153 OLD)
-endif ()
-
-if(POLICY CMP0153)
-  cmake_policy(SET CMP0153 NEW) # The exec_program() command should not be called
 endif()
 
 # Set projectname (must be done AFTER setting configurationtypes)
@@ -48,7 +39,7 @@ set(AC_PATH_ROOT "${CMAKE_SOURCE_DIR}")
 
 # set macro-directory
 list(APPEND CMAKE_MODULE_PATH
-    "${CMAKE_SOURCE_DIR}/src/cmake/macros")
+        "${CMAKE_SOURCE_DIR}/src/cmake/macros")
 
 include(CheckCXXSourceRuns)
 include(CheckIncludeFiles)
@@ -68,18 +59,40 @@ include(conf/dist/config.cmake)
 
 # load custom configurations for cmake if exists
 if(EXISTS "${CMAKE_SOURCE_DIR}/conf/config.cmake")
-  include(conf/config.cmake)
+    include(conf/config.cmake)
 endif()
+
+#
+# Loading dyn modules
+#
+
+# add modules and dependencies
+CU_SUBDIRLIST(sub_DIRS  "${CMAKE_SOURCE_DIR}/modules" FALSE FALSE)
+FOREACH(subdir ${sub_DIRS})
+
+    get_filename_component(MODULENAME ${subdir} NAME)
+
+    if (";${DISABLED_AC_MODULES};" MATCHES ";${MODULENAME};")
+        continue()
+    endif()
+
+    STRING(REPLACE "${CMAKE_SOURCE_DIR}/" "" subdir_rel ${subdir})
+    if(EXISTS "${subdir}/CMakeLists.txt")
+        add_subdirectory("${subdir_rel}")
+    endif()
+ENDFOREACH()
+
+CU_RUN_HOOK("AFTER_LOAD_CONF")
 
 # build in Release-mode by default if not explicitly set
 if(NOT CMAKE_BUILD_TYPE)
-  set(CMAKE_BUILD_TYPE "RelWithDebInfo")
+    set(CMAKE_BUILD_TYPE "RelWithDebInfo")
 endif()
 
 # turn off PCH totally if enabled (hidden setting, mainly for devs)
-if (NOPCH)
-  set(USE_COREPCH 0)
-  set(USE_SCRIPTPCH 0)
+if( NOPCH )
+    set(USE_COREPCH 0)
+    set(USE_SCRIPTPCH 0)
 endif()
 
 include(ConfigureBaseTargets)
@@ -88,15 +101,17 @@ include(GroupSources)
 include(AutoCollect)
 include(ConfigInstall)
 
+CU_RUN_HOOK("AFTER_LOAD_CMAKE_MODULES")
+
 find_package(PCHSupport)
 find_package(MySQL REQUIRED)
 
-if (UNIX AND WITH_PERFTOOLS)
-  find_package(Gperftools)
+if(UNIX AND WITH_PERFTOOLS)
+    find_package(Gperftools)
 endif()
 
-if (NOT WITHOUT_GIT)
-  find_package(Git 1.7)
+if(NOT WITHOUT_GIT)
+    find_package(Git)
 endif()
 
 # Find revision ID and hash of the sourcetree
@@ -116,6 +131,8 @@ add_subdirectory(src/common)
 # Loading application sources
 #
 
+CU_RUN_HOOK("BEFORE_SRC_LOAD")
+
 # add core sources
 add_subdirectory(src)
 
@@ -123,6 +140,8 @@ if (BUILD_APPLICATION_WORLDSERVER)
   # add modules sources
   add_subdirectory(modules)
 endif()
+
+CU_RUN_HOOK("AFTER_SRC_LOAD")
 
 if (BUILD_TESTING AND BUILD_APPLICATION_WORLDSERVER)
     # we use these flags to get code coverage

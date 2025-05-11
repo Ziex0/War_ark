@@ -15,15 +15,21 @@
  * with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-// This is an open source non-commercial project. Dear PVS-Studio, please check it.
-// PVS-Studio Static Code Analyzer for C, C++ and C#: http://www.viva64.com
-
 // This is where scripts' loading functions should be declared:
 // void MyExampleScript()
 
 // The name of this function should match:
 // void Add${NameOfDirectory}Scripts()
+
+void AddSC_Teleporter();
+void AddSC_NPC_VisualWeapon();
+void AddSC_NPC_Funny();
+
+// Custom part
+
 void AddCustomScripts()
 {
-    // MyExampleScript()
+    AddSC_Teleporter();
+	AddSC_NPC_VisualWeapon();
+	AddSC_NPC_Funny();
 }
