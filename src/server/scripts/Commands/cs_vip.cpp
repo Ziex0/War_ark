@@ -78,19 +78,19 @@ public:
     {
         if (!sVip->IsEnable())
         {
-            handler->PSendSysMessage("> Модуль отключен");
+            handler->PSendSysMessage("> Module disabled");
             return true;
         }
 
         if (!target)
         {
-            handler->PSendSysMessage("> Не указано имя игрока, имя будет выбрано из цели");
+            handler->PSendSysMessage("> The player's name is not specified, and a name will be chosen based on the target.");
             target = PlayerIdentifier::FromTargetOrSelf(handler);
         }
 
         if (!target)
         {
-            handler->PSendSysMessage("> Не выбрана цель");
+            handler->PSendSysMessage("> No target selected.");
             handler->SetSentErrorMessage(true);
             return false;
         }
@@ -99,17 +99,17 @@ public:
 
         if (!data)
         {
-            handler->PSendSysMessage("> Игрок {} не найден в базе", target->GetName());
+            handler->PSendSysMessage("> Player {} not found in the database.", target->GetName());
             return false;
         }
 
         if (sVip->IsVip(data->AccountId))
-            handler->PSendSysMessage("> Игрок {} уже был випом.", target->GetName());
+            handler->PSendSysMessage("> The player {} has already been a VIP..", target->GetName());
 
         if (sVip->Add(data->AccountId, GameTime::GetGameTime() + Days(duration), level, true))
         {
-            handler->PSendSysMessage("> Обновление статуста премиум аккаунта для игрока {}.", target->GetName());
-            handler->PSendSysMessage("> Уровень {}. Оставшееся время {}.", level, Warhead::Time::ToTimeString(Days(duration)));
+            handler->PSendSysMessage("> Update of the Vip account status for player {}.", target->GetName());
+            handler->PSendSysMessage("> Level {}. Remaining time {}.", level, Warhead::Time::ToTimeString(Days(duration)));
             return true;
         }
 
@@ -120,7 +120,7 @@ public:
     {
         if (!sVip->IsEnable())
         {
-            handler->PSendSysMessage("> Модуль отключен");
+            handler->PSendSysMessage("> Module disabled");
             return true;
         }
 
@@ -132,19 +132,19 @@ public:
     {
         if (!sVip->IsEnable())
         {
-            handler->PSendSysMessage("> Модуль отключен");
+            handler->PSendSysMessage("> Module disabled");
             return true;
         }
 
         if (!target)
         {
-            handler->PSendSysMessage("> Не указано имя игрока, имя будет выбрано из цели");
+            handler->PSendSysMessage("> No player name is specified, the name will be selected from the target");
             target = PlayerIdentifier::FromTargetOrSelf(handler);
         }
 
         if (!target)
         {
-            handler->PSendSysMessage("> Не выбрана цель");
+            handler->PSendSysMessage("> No target selected");
             handler->SetSentErrorMessage(true);
             return false;
         }
@@ -153,19 +153,19 @@ public:
 
         if (!data)
         {
-            handler->PSendSysMessage("> Игрок {} не найден в базе", target->GetName());
+            handler->PSendSysMessage("> Player {} is not found in the database", target->GetName());
             return false;
         }
 
         if (!sVip->IsVip(data->AccountId))
         {
-            handler->PSendSysMessage("> Игрок {} не имеет премиум статуса", target->GetName());
+            handler->PSendSysMessage("> Player {} does not have Vip status", target->GetName());
             return true;
         }
 
         sVip->UnSet(data->AccountId);
 
-        handler->PSendSysMessage("> Игрок {} больше не имеет премиум статуса", target->GetName());
+        handler->PSendSysMessage("> Player {} no longer has Vip", target->GetName());
         return true;
     }
 
@@ -173,13 +173,13 @@ public:
     {
         if (!sVip->IsEnable())
         {
-            handler->PSendSysMessage("> Модуль отключен");
+            handler->PSendSysMessage("> Module disabled");
             return true;
         }
 
         if (!target)
         {
-            handler->PSendSysMessage("> Не указано имя игрока, имя будет выбрано из цели");
+            handler->PSendSysMessage("> No player name is specified, the name will be selected from the target");
             target = PlayerIdentifier::FromTargetOrSelf(handler);
         }
 
@@ -198,7 +198,7 @@ public:
     {
         if (!sVip->IsEnable())
         {
-            handler->PSendSysMessage("> Модуль отключен");
+            handler->PSendSysMessage("> Module disabled");
             return true;
         }
 
@@ -210,12 +210,12 @@ public:
     {
         if (!sVip->IsEnable())
         {
-            handler->PSendSysMessage("> Модуль отключен");
+            handler->PSendSysMessage("> Module disabled");
             return true;
         }
 
         sVip->LoadRates();
-        handler->PSendSysMessage("> Вип рейты перезагружены");
+        handler->PSendSysMessage("> VIP rates have been reset");
         return true;
     }
 
@@ -223,12 +223,12 @@ public:
     {
         if (!sVip->IsEnable())
         {
-            handler->PSendSysMessage("> Модуль отключен");
+            handler->PSendSysMessage("> Module disabled");
             return true;
         }
 
         sVip->LoadVipVendors();
-        handler->PSendSysMessage("> Вип вендоры перезагружены");
+        handler->PSendSysMessage("> VIP vendors rebooted");
         return true;
     }
 
@@ -236,14 +236,14 @@ public:
     {
         if (!sVip->IsEnable())
         {
-            handler->PSendSysMessage("> Модуль отключен");
+            handler->PSendSysMessage("> Module disabled");
             return true;
         }
 
         Creature* vendor = handler->getSelectedCreature();
         if (!vendor)
         {
-            handler->SendSysMessage("Нужно выбрать существо");
+            handler->SendSysMessage("You need to choose a creature");
             return true;
         }
 
@@ -252,17 +252,17 @@ public:
 
         if (!vendor->IsVendor())
         {
-            handler->PSendSysMessage("# Существо `{}` - '{}' не является вендором", creatureEntry, creatureName);
+            handler->PSendSysMessage("# Creature `{}` - '{}' is not a vendor", creatureEntry, creatureName);
             return true;
         }
 
         if (!sVip->IsVipVendor(creatureEntry))
         {
-            handler->PSendSysMessage("# Существо `{}` - '{}' не является вип вендором", creatureEntry, creatureName);
+            handler->PSendSysMessage("# Creature `{}` - '{}' is not a VIP vendor", creatureEntry, creatureName);
             return true;
         }
 
-        handler->PSendSysMessage("# Существо `{}` - '{}' доступно для вип '{}' уровня и выше", creatureEntry, creatureName, sVip->GetVendorVipLevel(creatureEntry));
+        handler->PSendSysMessage("# Creature `{}` - '{}' available for VIP '{}' level and above", creatureEntry, creatureName, sVip->GetVendorVipLevel(creatureEntry));
         return true;
     }
 
@@ -270,14 +270,14 @@ public:
     {
         if (!sVip->IsEnable())
         {
-            handler->PSendSysMessage("> Модуль отключен");
+            handler->PSendSysMessage("> Module disabled");
             return true;
         }
 
         Creature* vendor = handler->getSelectedCreature();
         if (!vendor)
         {
-            handler->SendSysMessage("Нужно выбрать существо");
+            handler->SendSysMessage("You need to select Creature");
             return true;
         }
 
@@ -286,18 +286,18 @@ public:
 
         if (!vendor->IsVendor())
         {
-            handler->PSendSysMessage("# Существо `{}` - '{}' не является вендором", creatureEntry, creatureName);
+            handler->PSendSysMessage("# Creature `{}` - '{}' is not a vendor", creatureEntry, creatureName);
             return true;
         }
 
         if (sVip->IsVipVendor(creatureEntry))
         {
-            handler->PSendSysMessage("# Существо `{}` - '{}' уже было вип вендором", creatureEntry, creatureName);
+            handler->PSendSysMessage("# Creature `{}` - '{}' was already a VIP vendor", creatureEntry, creatureName);
             sVip->DeleteVendorVipLevel(creatureEntry);
         }
 
         sVip->AddVendorVipLevel(creatureEntry, vendorVipLevel);
-        handler->PSendSysMessage("# Существо `{}` - '{}' теперь доступно для вип '{}' уровня и выше", creatureEntry, creatureName, sVip->GetVendorVipLevel(creatureEntry));
+        handler->PSendSysMessage("# Creature `{}` - '{}' now available for VIP '{}' level and above", creatureEntry, creatureName, sVip->GetVendorVipLevel(creatureEntry));
         return true;
     }
 
@@ -305,14 +305,14 @@ public:
     {
         if (!sVip->IsEnable())
         {
-            handler->PSendSysMessage("> Модуль отключен");
+            handler->PSendSysMessage("> Module disabled");
             return true;
         }
 
         Creature* vendor = handler->getSelectedCreature();
         if (!vendor)
         {
-            handler->SendSysMessage("Нужно выбрать существо");
+            handler->SendSysMessage("Need to choose Creature");
             return true;
         }
 
@@ -321,18 +321,18 @@ public:
 
         if (!vendor->IsVendor())
         {
-            handler->PSendSysMessage("# Существо `{}` - '{}' не является вендором", creatureEntry, creatureName);
+            handler->PSendSysMessage("# Creature `{}` - '{}' is not a vendor", creatureEntry, creatureName);
             return true;
         }
 
         if (!sVip->IsVipVendor(creatureEntry))
         {
-            handler->PSendSysMessage("# Существо `{}` - '{}' не является вип вендором", creatureEntry, creatureName);
+            handler->PSendSysMessage("# Creature `{}` - '{}' is not a VIP vendor", creatureEntry, creatureName);
             return true;
         }
 
         sVip->DeleteVendorVipLevel(creatureEntry);
-        handler->PSendSysMessage("# Существо `{}` - '{}' доступно для всех", creatureEntry, creatureName);
+        handler->PSendSysMessage("# Creature `{}` - '{}' available to everyone", creatureEntry, creatureName);
         return true;
     }
 
@@ -340,7 +340,7 @@ public:
     {
         if (!sVip->IsEnable())
         {
-            handler->PSendSysMessage("> Модуль отключен");
+            handler->PSendSysMessage("> Module disabled");
             return true;
         }
 

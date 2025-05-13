@@ -155,7 +155,7 @@ bool Vip::Add(uint32 accountID, Seconds endTime, uint32 level, bool force /*= fa
 
     if (auto player = GetPlayerFromAccount(accountID))
     {
-        ChatHandler(player->GetSession()).PSendSysMessage("> У вас обновление премиум статуса. Уровень {}. Окончание через {}",
+        ChatHandler(player->GetSession()).PSendSysMessage("> You have a VIP status upgrade. Level {}. Ends in {}",
             level, GameLocale::ToTimeString(endTime - GameTime::GetGameTime(), player->GetSession()->GetSessionDbLocaleIndex(), false));
         LearnSpells(player, level);
     }
@@ -200,9 +200,9 @@ void Vip::OnLoginPlayer(Player* player)
     uint8 vipLevel = GetLevel(player);
 
     handler.PSendSysMessage("|cffff0000#|r --");
-    handler.PSendSysMessage("|cffff0000#|r |cff00ff00Привет,|r {}!", player->GetName());
-    handler.PSendSysMessage("|cffff0000#|r |cff00ff00Ваш уровень премиум аккаунта:|r {}", vipLevel);
-    handler.PSendSysMessage("|cffff0000#|r |cff00ff00Оставшееся время:|r {}", GetDuration(player));
+    handler.PSendSysMessage("|cffff0000#|r |cff00ff000Hello,|r {}!", player->GetName());
+    handler.PSendSysMessage("|cffff0000#|r |cff00ff000Your Vip account level:|r {}", vipLevel);
+    handler.PSendSysMessage("|cffff0000#|r |cff00ff00Оremaining time:|r {}", GetDuration(player));
 
     LearnSpells(player, vipLevel);
 }
@@ -221,7 +221,7 @@ void Vip::UnSet(uint32 accountID)
         return;
 
     if (auto targetSession = sWorld->FindSession(accountID))
-        ChatHandler(targetSession).PSendSysMessage("> Вы лишены статуса премиум аккаунта");
+        ChatHandler(targetSession).PSendSysMessage("> Your Vip account has end.");
 
     Delete(accountID);
 }
@@ -311,7 +311,7 @@ void Vip::UnBindInstances(Player* player)
 
     if (!IsVip(player))
     {
-        handler.PSendSysMessage("> У вас нет премиум статуса");
+        handler.PSendSysMessage("> You don't have Vip status");
         return;
     }
 
@@ -320,13 +320,13 @@ void Vip::UnBindInstances(Player* player)
     auto levelInfo{ GetVipLevelInfo(level) };
     if (!levelInfo)
     {
-        handler.PSendSysMessage("> Ошибка в уровне премиума: Не найдена информация для уровня {}", level);
+        handler.PSendSysMessage("> Vip Level Error: Tier information not found {}", level);
         return;
     }
 
     if (!levelInfo->CanUseUnbindCommands)
     {
-        handler.PSendSysMessage("> Ошибка в уровне премиума: Вы не можете использовать эту команду");
+        handler.PSendSysMessage("> Vip Level error: You cannot use this command");
         return;
     }
 
@@ -338,7 +338,7 @@ void Vip::UnBindInstances(Player* player)
 
         if (duration < _unbindDuration)
         {
-            handler.PSendSysMessage("> Это можно сделать через: {}", Warhead::Time::ToTimeString(_unbindDuration - duration));
+            handler.PSendSysMessage("> This can be done via: {}", Warhead::Time::ToTimeString(_unbindDuration - duration));
             return;
         }
     }
@@ -347,7 +347,7 @@ void Vip::UnBindInstances(Player* player)
     {
         MapEntry const* map = sMapStore.LookupEntry(mapID);
         if (!map)
-            return "Неизвестно";
+            return "Unknown";
 
         return map->name[localeIndex];
     };
@@ -633,52 +633,52 @@ void Vip::SendVipInfo(ChatHandler* handler, ObjectGuid targetGuid)
     auto data = sCharacterCache->GetCharacterCacheByGuid(targetGuid);
     if (!data)
     {
-        handler->PSendSysMessage("# Игрок не найден");
+        handler->PSendSysMessage("# Player not found");
         return;
     }
 
     auto vipInfo = GetVipInfo(data->AccountId);
 
     if (!vipInfo)
-        handler->PSendSysMessage("# Игрок: {} не является випом", data->Name);
+        handler->PSendSysMessage("# Player: {} is not a VIP", data->Name);
     else
     {
         auto vipLevel = vipInfo->Level;
 
-        handler->PSendSysMessage("# Игрок: {}", data->Name);
-        handler->PSendSysMessage("# Уровень премиум аккаунта: {}", vipLevel);
-        handler->PSendSysMessage("# Оставшееся время: {}", GetDuration(vipInfo));
+        handler->PSendSysMessage("# Player: {}", data->Name);
+        handler->PSendSysMessage("# Vip account level: {}", vipLevel);
+        handler->PSendSysMessage("# Remaining time: {}", GetDuration(vipInfo));
 
         if (auto vipRates = GetVipRates(vipLevel))
         {
-            handler->PSendSysMessage("# Премиум рейты:");
-            handler->PSendSysMessage("# Рейтинг получения опыта: {}", vipRates->GetVipRate(VipRateType::XP));
-            handler->PSendSysMessage("# Рейтинг получения чести: {}", vipRates->GetVipRate(VipRateType::Honor));
-            handler->PSendSysMessage("# Рейтинг получения арены: {}", vipRates->GetVipRate(VipRateType::ArenaPoint));
-            handler->PSendSysMessage("# Рейтинг получения репутации: {}", vipRates->GetVipRate(VipRateType::Reputation));
-            handler->PSendSysMessage("# Рейтинг прокачки профессий: {}", vipRates->GetVipRate(VipRateType::Profession));
+            handler->PSendSysMessage("# Vip rates:");
+            handler->PSendSysMessage("# Experience Gain Rating: {}"	, vipRates->GetVipRate(VipRateType::XP));
+            handler->PSendSysMessage("# Honor Gain Rating: {}"		, vipRates->GetVipRate(VipRateType::Honor));
+            handler->PSendSysMessage("# Arena Gain Rating: {}"		, vipRates->GetVipRate(VipRateType::ArenaPoint));
+            handler->PSendSysMessage("# Reputation Gain Rating: {}"	, vipRates->GetVipRate(VipRateType::Reputation));
+            handler->PSendSysMessage("# Profession Gain rating: {}"	, vipRates->GetVipRate(VipRateType::Profession));
         }
     }
 }
 
 void Vip::SendVipListRates(ChatHandler* handler)
 {
-    handler->PSendSysMessage("# Премиум рейты для разных уровней вип:");
+    handler->PSendSysMessage("# Vip rates for different VIP levels:");
 
     if (_storeRates.empty())
     {
-        handler->PSendSysMessage("# Премиум рейты не обнаружены");
+        handler->PSendSysMessage("# Vip rates not found");
         return;
     }
 
     for (auto const& [vipLevel, vipRates] : _storeRates)
     {
-        handler->PSendSysMessage("# Рейты для премиум уровня: {}", vipLevel);
-        handler->PSendSysMessage("# Рейтинг получения опыта: {}", vipRates.GetVipRate(VipRateType::XP));
-        handler->PSendSysMessage("# Рейтинг получения чести: {}", vipRates.GetVipRate(VipRateType::Honor));
-        handler->PSendSysMessage("# Рейтинг получения арены: {}", vipRates.GetVipRate(VipRateType::ArenaPoint));
-        handler->PSendSysMessage("# Рейтинг получения репутации: {}", vipRates.GetVipRate(VipRateType::Reputation));
-        handler->PSendSysMessage("# Рейтинг прокачки профессий: {}", vipRates.GetVipRate(VipRateType::Profession));
+        handler->PSendSysMessage("# Vip Level Rates: {}"	    , vipLevel);
+        handler->PSendSysMessage("# Experience Gain Rating: {}"	, vipRates.GetVipRate(VipRateType::XP));
+        handler->PSendSysMessage("# Honor Gain Rating: {}"		, vipRates.GetVipRate(VipRateType::Honor));
+        handler->PSendSysMessage("# Arena Gain Rating: {}"		, vipRates.GetVipRate(VipRateType::ArenaPoint));
+        handler->PSendSysMessage("# Reputation Gain Rating: {}"	, vipRates.GetVipRate(VipRateType::Reputation));
+        handler->PSendSysMessage("# Profession Gain rating: {}"	, vipRates.GetVipRate(VipRateType::Profession));
         handler->PSendSysMessage("# --");
     }
 }
@@ -843,13 +843,13 @@ void Vip::SendVipMenu(Player* player)
 
     if (!IsVip(player))
     {
-        handler.PSendSysMessage("У вас нет вип аккаунта");
+        handler.PSendSysMessage("You don't have a VIP account");
         return;
     }
 
     if (!_isMenuEnable)
     {
-        handler.PSendSysMessage("Вип меню отключено");
+        handler.PSendSysMessage("VIP menu is disabled");
         return;
     }
 
@@ -863,28 +863,28 @@ void Vip::SendVipMenu(Player* player)
         player->HasStealthAura() ||
         player->HasInvisibilityAura())
     {
-        handler.PSendSysMessage("Сейчас вы не можете этого сделать");
+        handler.PSendSysMessage("You can't do that now.");
         return;
     }
 
     // Clears old options
     ClearGossipMenuFor(player);
 
-    AddGossipItemFor(player, GOSSIP_ICON_CHAT, Warhead::StringFormat("Уровень: {}", GetLevel(player)), GOSSIP_SENDER_MAIN, 100);
-    AddGossipItemFor(player, GOSSIP_ICON_CHAT, Warhead::StringFormat("Осталось: {}", GetDuration(player)), GOSSIP_SENDER_MAIN, 100);
+    AddGossipItemFor(player, GOSSIP_ICON_CHAT, Warhead::StringFormat("Level: {}", GetLevel(player)), GOSSIP_SENDER_MAIN, 100);
+    AddGossipItemFor(player, GOSSIP_ICON_CHAT, Warhead::StringFormat("Time Left: {}", GetDuration(player)), GOSSIP_SENDER_MAIN, 100);
     AddGossipItemFor(player, GOSSIP_ICON_CHAT, "---", GOSSIP_SENDER_MAIN, 100);
 
     if (_isMenuAuctioneerEnable)
-        AddGossipItemFor(player, GOSSIP_ICON_CHAT, "Аукцион", GOSSIP_SENDER_MAIN, 1);
+        AddGossipItemFor(player, GOSSIP_ICON_CHAT, "Auction", GOSSIP_SENDER_MAIN, 1);
 
     if (_isMenuBankEnable)
-        AddGossipItemFor(player, GOSSIP_ICON_CHAT, "Банк", GOSSIP_SENDER_MAIN, 2);
+        AddGossipItemFor(player, GOSSIP_ICON_CHAT, "Bank", GOSSIP_SENDER_MAIN, 2);
 
     if (_isMenuMailEnable)
-        AddGossipItemFor(player, GOSSIP_ICON_CHAT, "Почта", GOSSIP_SENDER_MAIN, 3);
+        AddGossipItemFor(player, GOSSIP_ICON_CHAT, "Mail", GOSSIP_SENDER_MAIN, 3);
 
     if (_isMenuBuffEnable)
-        AddGossipItemFor(player, GOSSIP_ICON_CHAT, "Получить вип баффы", GOSSIP_SENDER_MAIN, 4);
+        AddGossipItemFor(player, GOSSIP_ICON_CHAT, "VIP Buffs", GOSSIP_SENDER_MAIN, 4);
 
     // SetMenuId must be after clear menu and before send menu!!
     player->PlayerTalkClass->GetGossipMenu().SetMenuId(VIP_MENU_ID);        // Sets menu ID, so we can identify our menu in Select hook. Needs unique number for the menu

@@ -44,10 +44,13 @@ constexpr auto IN_MILLISECONDS = 1000;
 enum AccountTypes
 {
     SEC_PLAYER         = 0,
-    SEC_MODERATOR      = 1,
-    SEC_GAMEMASTER     = 2,
-    SEC_ADMINISTRATOR  = 3,
-    SEC_CONSOLE        = 4                                  // must be always last in list, accounts must have less security level always also
+    SEC_VIP_1          = 1,
+    SEC_VIP_2          = 2,
+    SEC_VIP_3          = 3,
+    SEC_MODERATOR      = 4,
+    SEC_GAMEMASTER     = 5,
+    SEC_ADMINISTRATOR  = 6,
+    SEC_CONSOLE        = 7                                  // must be always last in list, accounts must have less security level always also
 };
 
 enum LocaleConstant
