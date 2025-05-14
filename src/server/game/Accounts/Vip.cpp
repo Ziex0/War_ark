@@ -283,7 +283,7 @@ float Vip::GetRateForPlayer(Player* player, VipRateType rate)
 std::string Vip::GetDuration(Player* player)
 {
     if (!player)
-        return "<неизвестно>";
+        return "<Unknown>";
 
     return GetDuration(player->GetSession()->GetAccountId(), player->GetSession()->GetSessionDbLocaleIndex());
 }
@@ -320,7 +320,7 @@ void Vip::UnBindInstances(Player* player)
     auto levelInfo{ GetVipLevelInfo(level) };
     if (!levelInfo)
     {
-        handler.PSendSysMessage("> Vip Level Error: Tier information not found {}", level);
+        handler.PSendSysMessage("> Vip Level Error: Vip information not found {}", level);
         return;
     }
 
@@ -359,13 +359,13 @@ void Vip::UnBindInstances(Player* player)
             switch (diff)
             {
             case RAID_DIFFICULTY_10MAN_NORMAL:
-                return "10 об.";
+                return "10 Man N.";
             case RAID_DIFFICULTY_25MAN_NORMAL:
-                return "25 об.";
+                return "25 Man N.";
             case RAID_DIFFICULTY_10MAN_HEROIC:
-                return "10 гер.";
+                return "10 Man H.";
             case RAID_DIFFICULTY_25MAN_HEROIC:
-                return "25 гер.";
+                return "25 Man H.";
             default:
                 break;
             }
@@ -375,9 +375,9 @@ void Vip::UnBindInstances(Player* player)
             switch (diff)
             {
             case DUNGEON_DIFFICULTY_NORMAL:
-                return "5 об.";
+                return "5 Normal.";
             case DUNGEON_DIFFICULTY_HEROIC:
-                return "5 гер.";
+                return "5 Heroic.";
             default:
                 break;
             }
@@ -406,7 +406,7 @@ void Vip::UnBindInstances(Player* player)
 
     if (!count)
     {
-        handler.PSendSysMessage("> Нечего сбрасывать");
+        handler.PSendSysMessage("> There is nothing to reset");
         return;
     }
 
@@ -645,9 +645,9 @@ void Vip::SendVipInfo(ChatHandler* handler, ObjectGuid targetGuid)
     {
         auto vipLevel = vipInfo->Level;
 
-        handler->PSendSysMessage("# Player: {}", data->Name);
-        handler->PSendSysMessage("# Vip account level: {}", vipLevel);
-        handler->PSendSysMessage("# Remaining time: {}", GetDuration(vipInfo));
+        handler->PSendSysMessage("|cffff0000#|r |cff00ff000Hello, Player: {}", data->Name);
+        handler->PSendSysMessage("|cffff0000#|r |cff00ff000Your Vip account level:|r {}", vipLevel);
+        handler->PSendSysMessage("|cffff0000#|r |cff00ff00Оremaining time:|r {}", GetDuration(vipInfo));
 
         if (auto vipRates = GetVipRates(vipLevel))
         {
@@ -767,7 +767,7 @@ Player* Vip::GetPlayerFromAccount(uint32 accountID)
 std::string Vip::GetDuration(VipInfo* vipInfo, int8 locale /*= 0*/)
 {
     if (!vipInfo || vipInfo->EndTime < GameTime::GetGameTime())
-        return "<неизвестно>";
+        return "<Unknown>";
 
     return GameLocale::ToTimeString(vipInfo->EndTime - GameTime::GetGameTime(), locale, false);
 }
@@ -870,9 +870,9 @@ void Vip::SendVipMenu(Player* player)
     // Clears old options
     ClearGossipMenuFor(player);
 
-    AddGossipItemFor(player, GOSSIP_ICON_CHAT, Warhead::StringFormat("Level: {}", GetLevel(player)), GOSSIP_SENDER_MAIN, 100);
-    AddGossipItemFor(player, GOSSIP_ICON_CHAT, Warhead::StringFormat("Time Left: {}", GetDuration(player)), GOSSIP_SENDER_MAIN, 100);
-    AddGossipItemFor(player, GOSSIP_ICON_CHAT, "---", GOSSIP_SENDER_MAIN, 100);
+    AddGossipItemFor(player, GOSSIP_ICON_CHAT, Warhead::StringFormat("Vip Level: {}", GetLevel(player)), GOSSIP_SENDER_MAIN, 100);
+    AddGossipItemFor(player, GOSSIP_ICON_CHAT, Warhead::StringFormat("Vip Time Left: {}", GetDuration(player)), GOSSIP_SENDER_MAIN, 100);
+    AddGossipItemFor(player, GOSSIP_ICON_CHAT, "Back <-", GOSSIP_SENDER_MAIN, 100);
 
     if (_isMenuAuctioneerEnable)
         AddGossipItemFor(player, GOSSIP_ICON_CHAT, "Auction", GOSSIP_SENDER_MAIN, 1);
