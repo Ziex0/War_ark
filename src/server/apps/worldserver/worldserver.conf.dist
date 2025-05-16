@@ -4790,7 +4790,7 @@ IPCache.Ban.Duration = "300 300 604800"
 ###################################################################################################
 
 ########################################
-# Vip module configuration
+# Vip module configuration  //dont use this ON!!
 ########################################
 #
 #   VIP.Enable
@@ -4822,7 +4822,7 @@ VIP.Unbind.Duration = 86400
 #       Default: 1
 #
 
-VIP.Menu.Enable = 1
+VIP.Menu.Enable = 0
 
 #
 #   VIP.Menu.Auctioneer.Enable
@@ -4838,7 +4838,7 @@ VIP.Menu.Auctioneer.Enable = 0
 #       Default: 1
 #
 
-VIP.Menu.Bank.Enable = 1
+VIP.Menu.Bank.Enable = 0
 
 #
 #   VIP.Menu.Mail.Enable
@@ -4846,7 +4846,7 @@ VIP.Menu.Bank.Enable = 1
 #       Default: 1
 #
 
-VIP.Menu.Mail.Enable = 1
+VIP.Menu.Mail.Enable = 0
 
 #
 #   VIP.Menu.Buff.Enable
@@ -4854,7 +4854,7 @@ VIP.Menu.Mail.Enable = 1
 #       Default: 1
 #
 
-VIP.Menu.Buff.Enable = 1
+VIP.Menu.Buff.Enable = 0
 
 #
 #   VIP.Command.Buff.List
@@ -4862,7 +4862,37 @@ VIP.Menu.Buff.Enable = 1
 #       Default: "25898,48074,48162,48470,57623,61316"
 #
 
-VIP.Command.Buff.List = "25898,48469,42995,48169,48073,48161,53307,23735,23736,23737,23738,23766,23767,23768,23769"
+VIP.Command.Buff.List = "23735, #Sayge's Dark Fortune of Strength
+						 23737, #Sayge's Dark Fortune of Stamina
+						 23738, #Sayge's Dark Fortune of Stamina
+						 23769, #Sayge's Dark Fortune of Resistance
+						 23766, #Sayge's Dark Fortune of Intelligence
+						 23768, #Sayge's Dark Fortune of Damage
+						 23767, #Sayge's Dark Fortune of Armor
+						 23736, #Sayge's Dark Fortune of Agility
+						 26393, #Eluns blessing 10% Stats
+						 48074,
+						 48170,
+						 43223,
+						 36880,
+						 467,
+						 48469,
+						 48162,
+						 32728, #Arena prep free spell casting
+						 21564,
+						 26035,
+						 48469,
+						 48073,
+						 16609,
+						 36880,
+						 15366,
+						 43223,
+										##65077, -- tower of frost 40% health
+										##65075, -- tower of fire 40% health 50% fire damage
+						 38734, -- Master Ranged Buff
+						 35912, -- Master Magic Buff
+						 35874, -- Master Melee Buff
+						 48074"
 #
 ###################################################################################################
 #			DISCORD

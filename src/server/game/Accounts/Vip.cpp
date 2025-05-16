@@ -199,10 +199,10 @@ void Vip::OnLoginPlayer(Player* player)
     ChatHandler handler(player->GetSession());
     uint8 vipLevel = GetLevel(player);
 
-    handler.PSendSysMessage("|cffff0000#|r --");
-    handler.PSendSysMessage("|cffff0000#|r |cff00ff000Hello,|r {}!", player->GetName());
-    handler.PSendSysMessage("|cffff0000#|r |cff00ff000Your Vip account level:|r {}", vipLevel);
-    handler.PSendSysMessage("|cffff0000#|r |cff00ff00Оremaining time:|r {}", GetDuration(player));
+    handler.PSendSysMessage(" |cffff0000|r --");
+    handler.PSendSysMessage(" |cffff0000|r |cff00ff000Hello,|r {}!", player->GetName());
+    handler.PSendSysMessage(" |cffff0000|r |cff00ff000Your Vip account level:|r {}", vipLevel);
+    handler.PSendSysMessage(" |cffff0000|r |cff00ff00Оremaining time:|r {}", GetDuration(player));
 
     LearnSpells(player, vipLevel);
 }
@@ -645,9 +645,9 @@ void Vip::SendVipInfo(ChatHandler* handler, ObjectGuid targetGuid)
     {
         auto vipLevel = vipInfo->Level;
 
-        handler->PSendSysMessage("|cffff0000#|r |cff00ff000Hello, Player: {}", data->Name);
-        handler->PSendSysMessage("|cffff0000#|r |cff00ff000Your Vip account level:|r {}", vipLevel);
-        handler->PSendSysMessage("|cffff0000#|r |cff00ff00Оremaining time:|r {}", GetDuration(vipInfo));
+        handler->PSendSysMessage("|cff00ff000 Hello, Player: {}", data->Name);
+        handler->PSendSysMessage("|cff00ff000 Your Vip account level:|r {}", vipLevel);
+        handler->PSendSysMessage("|cff00ff00О remaining time:|r {}", GetDuration(vipInfo));
 
         if (auto vipRates = GetVipRates(vipLevel))
         {

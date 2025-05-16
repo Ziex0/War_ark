@@ -25,6 +25,9 @@ void AddSC_Teleporter();
 void AddSC_NPC_VisualWeapon();
 void AddSC_NPC_Funny();
 
+void AddSC_beastmaster_npc();
+
+
 // Custom part
 
 void AddCustomScripts()
@@ -32,4 +35,6 @@ void AddCustomScripts()
     AddSC_Teleporter();
 	AddSC_NPC_VisualWeapon();
 	AddSC_NPC_Funny();
+	
+	AddSC_beastmaster_npc();
 }
