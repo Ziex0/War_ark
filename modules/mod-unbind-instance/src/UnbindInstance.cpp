@@ -160,7 +160,7 @@ void UnbindInstance::LoadCostData()
     if (!_isEnable)
         return;
 
-    LOG_INFO("module.unbind", "Загрузка вариантов стоимости сброса кд...");
+    LOG_INFO("module.unbind", "Loading cd reset cost options...");
 
     QueryResult result = CharacterDatabase.Query("SELECT "
                          "`ItemID`,"                 // 0

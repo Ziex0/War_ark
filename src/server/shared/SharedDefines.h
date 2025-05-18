@@ -95,7 +95,6 @@ enum Races
     RACE_GOBLIN             = 9,
     RACE_BLOODELF           = 10, // TITLE Blood Elf
     RACE_DRAENEI            = 11,
-	RACE_WORGEN             = 21	//, worgen
     //RACE_FEL_ORC        = 12,
     //RACE_NAGA           = 13,
     //RACE_BROKEN         = 14,
@@ -105,7 +104,7 @@ enum Races
     //RACE_FOREST_TROLL   = 18,
     //RACE_TAUNKA         = 19,
     //RACE_NORTHREND_SKELETON = 20,
-    //RACE_ICE_TROLL      = 21
+    RACE_WORGEN             = 21	//, worgen
 };
 
 // max+1 for player race
