@@ -26,7 +26,10 @@ void AddSC_NPC_VisualWeapon();
 void AddSC_NPC_Funny();
 
 void AddSC_beastmaster_npc();
-
+void AddSC_gm_active();
+void AddSC_vipcommands();
+void AddSC_level_255();
+void AddSC_title_npc();
 
 // Custom part
 
@@ -37,4 +40,8 @@ void AddCustomScripts()
 	AddSC_NPC_Funny();
 	
 	AddSC_beastmaster_npc();
+	AddSC_gm_active();
+	AddSC_vipcommands();
+	AddSC_level_255();
+	AddSC_title_npc();
 }
